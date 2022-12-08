@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce{% endblock %}
+
+{% block body %}
+    <h1>Annonce</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ annonce.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ annonce.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ annonce.description }}</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td>{{ annonce.model }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ annonce.prix }}</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>{{ annonce.year }}</td>
+            </tr>
+            <tr>
+                <th>Km</th>
+                <td>{{ annonce.km }}</td>
+            </tr>
+            <tr>
+                <th>Fuel</th>
+                <td>{{ annonce.fuel }}</td>
+            </tr>
+            <tr>
+                <th>Licence</th>
+                <td>{{ annonce.licence ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Imgfile</th>
+                <td>{{ annonce.imgfile }}</td>
+            </tr>
+            <tr>
+                <th>Is_visible</th>
+                <td>{{ annonce.isVisible ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_annonce_index') }}">back to list</a>
+
+    <a href="{{ path('app_annonce_edit', {'id': annonce.id}) }}">edit</a>
+
+    {{ include('annonce/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce index{% endblock %}
+
+{% block body %}
+    <h1>Annonce index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Model</th>
+                <th>Prix</th>
+                <th>Year</th>
+                <th>Km</th>
+                <th>Fuel</th>
+                <th>Licence</th>
+                <th>Imgfile</th>
+                <th>Is_visible</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annonce in annonces %}
+            <tr>
+                <td>{{ annonce.id }}</td>
+                <td>{{ annonce.title }}</td>
+                <td>{{ annonce.description }}</td>
+                <td>{{ annonce.model }}</td>
+                <td>{{ annonce.prix }}</td>
+                <td>{{ annonce.year }}</td>
+                <td>{{ annonce.km }}</td>
+                <td>{{ annonce.fuel }}</td>
+                <td>{{ annonce.licence ? 'Yes' : 'No' }}</td>
+                <td>{{ annonce.imgfile }}</td>
+                <td>{{ annonce.isVisible ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_annonce_show', {'id': annonce.id}) }}">show</a>
+                    <a href="{{ path('app_annonce_edit', {'id': annonce.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_annonce_new') }}">Create new</a>
+{% endblock %}
