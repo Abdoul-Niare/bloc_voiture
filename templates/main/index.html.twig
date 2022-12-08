@@ -4,14 +4,22 @@
 {% endblock %}
 
 {% block body %}
+	<h1 class="text-center">Elles sont ici vos voitures de reves</h1>
+
+	{% for marque in marques %}
+		<a class="btn btn-secondary" href="{{path('tab', {id:marque.id})}}">{{marque.name}}</a>
+	{% endfor %}
+
+	<div class="container d-flex justify-content-center gap-5">
 	{% for annonce in annonces %}
-		<div class="card" style="width: 18rem;">
-			<img class="card-img-top" src="..." alt="Card image cap">
+		<div class="card" w-18 h-30 style="width: 18rem,">
+		<img class="card-img-top w-18 h-30" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
 			<div class="card-body">
-				<h5 class="card-title">{{annonce.title}}</h5>
-				<p class="card-text">{{annonce.description}}</p>
-				<a href="#" class="btn btn-primary">Go</a>
+				<a href="#" class="card-title">{{annonce.marque}}</a>
+				<p class="card-text">{{annonce.description|raw}}</p>
+				<a href="#" class="btn btn-primary">Go</a>	
 			</div>
 		</div>
 	{% endfor %}
+	</div>
 {% endblock %}

@@ -163,7 +163,7 @@ class Annonce
         return $this;
     }
 
-    public function isIsVisible(): ?bool
+    public function getisVisible(): ?bool
     {
         return $this->is_visible;
     }

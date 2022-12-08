@@ -20,6 +20,18 @@
 		{% block Home %}
 			{% include "component/navbar.html.twig" %}
 		{% endblock %}
+		{% for message in app.flashes('Erreur') %}
+            <div class="alert alert-danger" role="alert">
+                <strong class="font-bold">Erreur!</strong>
+                <span class="block sm:inline">{{message}}</span>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('Succès') %}
+            <div class="alert alert-success">
+            <strong class="font-bold">Succès !</strong>
+                {{ message }}
+            </div>
+        {% endfor %}
 		{% block body %}{% endblock %}
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
