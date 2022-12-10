@@ -21,7 +21,7 @@ class AnnonceRepository extends ServiceEntityRepository
         parent::__construct($registry, Annonce::class);
     }
 
-    public function save(Annonce $entity, bool $flush = false): void
+    public function save(Annonce $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Annonce $entity, bool $flush = false): void
+    public function remove(Annonce $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 

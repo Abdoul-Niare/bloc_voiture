@@ -7,17 +7,17 @@
 
 {% block body %}
 
-<div class="row">
-    <h1 class="title next-center nt-4 text-dark">Les annonces appartenant à {{marq.name}}</h1>
+<div class="row ">
+    <h1 class="title next-center nt-2 text-center" style="margin: 1rem;">Les annonces appartenant à {{marq.name}}</h1>
     
-	<div class="row d-flex justify-content-center col-2 ">
+	<div class="row d-flex flex-row col-4 ">
 	{% for annonce in marq.annonces %}
-		<div class="card" style="width: 18rem, ">
-		<img class="card-img-top" src="..." alt="Card image cap">
+		<div class="card" style="width: 18rem,">
+		<img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
 			<div class="card-body">
 				<a href="#" class="card-title">{{annonce.marque}}</a>
 				<p class="card-text">{{annonce.description|raw}}</p>
-				<a href="#" class="btn btn-primary">Go</a>	
+				<a href="#" class="btn btn-primary">Goga</a>	
 			</div>
 		</div>
 	{% endfor %}

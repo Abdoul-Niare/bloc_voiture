@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\AnnonceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 class Annonce
@@ -49,6 +52,14 @@ class Annonce
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     private ?User $author = null;
+
+    #[ORM\OneToMany(mappedBy: 'UsersFav', targetEntity: Favori::class)]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->favoris = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -197,5 +208,48 @@ class Annonce
         $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favori $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setUsersFav($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favori $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getUsersFav() === $this) {
+                $favori->setUsersFav(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return boolean
+     */
+    public function isUserfav(User $user): bool
+    {
+        foreach($this->favoris as $favoris){
+            if($favoris->getUsers()=== $user) return true;
+        }
+        return false;
+
     }
 }

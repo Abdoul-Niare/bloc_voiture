@@ -4,22 +4,34 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-center">Elles sont ici vos voitures de reves</h1>
+	<h1 class="text-center" style="margin: 1rem;">Elles sont ici vos voitures de reves</h1>
 
 	{% for marque in marques %}
-		<a class="btn btn-secondary" href="{{path('tab', {id:marque.id})}}">{{marque.name}}</a>
+		<a class="btn btn-secondary d-flex justify-content-between p-2 m-2 " href="{{path('tab', {id:marque.id})}}">{{marque.name}}</a>
 	{% endfor %}
 
-	<div class="container d-flex justify-content-center gap-5">
-	{% for annonce in annonces %}
-		<div class="card" w-18 h-30 style="width: 18rem,">
-		<img class="card-img-top w-18 h-30" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
-			<div class="card-body">
-				<a href="#" class="card-title">{{annonce.marque}}</a>
-				<p class="card-text">{{annonce.description|raw}}</p>
-				<a href="#" class="btn btn-primary">Go</a>	
-			</div>
+	{% if app.user %}
+		<div class="text-center mt-3">
+		<a href="{{ path('app_annonce_new')}}" class="btn btn-success text-center mt-3">Ajouter une nouvelle annonce</a>
 		</div>
-	{% endfor %}
+	{% endif %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="text-center mt-3">
+			<a class="btn btn-warning " style=" margin: 0 auto;" href="{{ path('app_annonce_index')}}">Liste des annonces</a>
+			<a class="btn btn-warning " style=" margin: 10px auto;" href="{{ path('app_marque_index')}}">Liste des marques</a>
+		</div>
+	{% endif %}
+
+	<div class="container d-flex flex-wrap gap-5" style="width: 100vw">
+		{% for annonce in annonces %}
+			<div class="card m-4" style="width: 18rem;">
+				<img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
+				<div class="card-body">
+					<h5 class="card-title">{{annonce.title|u.truncate(20,'...')}}</h5>
+					<p class="card-text">{{annonce.description|raw}}</p>
+					<a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-success">Voir l'annonce</a>
+				</div>
+			</div>
+		{% endfor %}
 	</div>
 {% endblock %}

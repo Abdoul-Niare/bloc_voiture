@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+    {% for annonce in annonces %}
+        <div class="card m-4" style="width: 18rem;">
+            <img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{annonce.title|u.truncate(20,'...')}}</h5>
+                <p class="card-text">{{annonce.description|raw}}</p>
+                <a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-success">Voir l'annonce</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

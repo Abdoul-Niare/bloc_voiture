@@ -17,15 +17,17 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig', [
             'marques'=> $marqueRepository->findAll(),
-            'annonces' => $annonceRepository ->findAll(),
-            'controller_name' => 'MainController',
+            'annonces' => $annonceRepository ->findBy([
+                'is_visible'=>true
+            ]),
+            // 'controller_name' => 'MainController',
         ]);
     }
-    
 
     #[Route('/tab/{id}', name: 'tab', methods: ['GET'])]
     public function tab(Marque $marque, AnnonceRepository $annonceRepository, MarqueRepository $marqueRepository): Response
-    {
+    {   
+        // $annonces = $annonceRepo->findAll();
         return $this->render('main/tab.html.twig', [
             'marq' => $marque,
             'marque' => $marqueRepository->findAll(),
