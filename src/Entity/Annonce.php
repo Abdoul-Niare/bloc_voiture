@@ -7,7 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+
+use function PHPUnit\Framework\returnSelf;
 
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 class Annonce
@@ -53,12 +54,15 @@ class Annonce
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     private ?User $author = null;
 
-    #[ORM\OneToMany(mappedBy: 'UsersFav', targetEntity: Favori::class)]
-    private Collection $favoris;
+    #[ORM\OneToMany(mappedBy: 'annonces', targetEntity: AnnonceListByUser::class)]
+    private Collection $usersFav;
+
+    #[ORM\Column(length: 255)]
+    private ?string $reference = null;
 
     public function __construct()
     {
-        $this->favoris = new ArrayCollection();
+        $this->usersFav = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,29 +215,29 @@ class Annonce
     }
 
     /**
-     * @return Collection<int, Favori>
+     * @return Collection<int, AnnonceListByUser>
      */
-    public function getFavoris(): Collection
+    public function getUsersFav(): Collection
     {
-        return $this->favoris;
+        return $this->usersFav;
     }
 
-    public function addFavori(Favori $favori): self
+    public function addUsersFav(AnnonceListByUser $usersFav): self
     {
-        if (!$this->favoris->contains($favori)) {
-            $this->favoris->add($favori);
-            $favori->setUsersFav($this);
+        if (!$this->usersFav->contains($usersFav)) {
+            $this->usersFav->add($usersFav);
+            $usersFav->setAnnonces($this);
         }
 
         return $this;
     }
 
-    public function removeFavori(Favori $favori): self
+    public function removeUsersFav(AnnonceListByUser $usersFav): self
     {
-        if ($this->favoris->removeElement($favori)) {
+        if ($this->usersFav->removeElement($usersFav)) {
             // set the owning side to null (unless already changed)
-            if ($favori->getUsersFav() === $this) {
-                $favori->setUsersFav(null);
+            if ($usersFav->getAnnonces() === $this) {
+                $usersFav->setAnnonces(null);
             }
         }
 
@@ -241,15 +245,29 @@ class Annonce
     }
 
     /**
+     * 
+     *
      * @param User $user
      * @return boolean
      */
-    public function isUserfav(User $user): bool
+    public function isUserFav(User $user): bool
     {
-        foreach($this->favoris as $favoris){
-            if($favoris->getUsers()=== $user) return true;
+        foreach($this->usersFav as $userFav){
+            if($userFav->getUsers() === $user) return true;
         }
         return false;
-
     }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
 }

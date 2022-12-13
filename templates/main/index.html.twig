@@ -7,12 +7,12 @@
 	<h1 class="text-center" style="margin: 1rem;">Elles sont ici vos voitures de reves</h1>
 
 	{% for marque in marques %}
-		<a class="btn btn-secondary d-flex justify-content-between p-2 m-2 " href="{{path('tab', {id:marque.id})}}">{{marque.name}}</a>
+		<a class="btn btn-success d-flex justify-content-between p-2 m-2 " href="{{path('tab', {id:marque.id})}}">{{marque.name}}</a>
 	{% endfor %}
 
 	{% if app.user %}
 		<div class="text-center mt-3">
-		<a href="{{ path('app_annonce_new')}}" class="btn btn-success text-center mt-3">Ajouter une nouvelle annonce</a>
+			<a href="{{ path('app_annonce_new')}}" class="btn btn-success text-center mt-3">Ajouter une nouvelle annonce</a>
 		</div>
 	{% endif %}
 	{% if is_granted('ROLE_ADMIN') %}
@@ -22,14 +22,27 @@
 		</div>
 	{% endif %}
 
-	<div class="container d-flex flex-wrap gap-5" style="width: 100vw">
+	<div class="container d-flex flex-wrap gap-2" style="width: 100vw">
 		{% for annonce in annonces %}
 			<div class="card m-4" style="width: 18rem;">
-				<img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
+				<img class="card-img-top" src="{{asset(annonce.imgfile )}}" alt="Card image cap">
 				<div class="card-body">
 					<h5 class="card-title">{{annonce.title|u.truncate(20,'...')}}</h5>
 					<p class="card-text">{{annonce.description|raw}}</p>
+					<p class="card-text">{{annonce.reference}}</p>
 					<a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-success">Voir l'annonce</a>
+					{% if app.user %}
+						{% if annonce.isUserFav(app.user) %}
+							<a href="{{ path('app_annonce_fav', {'id':annonce.id})}}" class="btn btn-success " style="width: 10vw, margin-left:10px">
+								<i class="fa-solid fa-heart"></i>
+							</a>
+						{% else %}
+							<a href="{{ path('app_annonce_fav', {'id':annonce.id})}}" class="btn btn-success" style="width: 10vw, margin-left:10px">
+								<i class="fa-regular fa-heart"></i>
+							</a>
+						{% endif %}
+					{% endif %}
+
 				</div>
 			</div>
 		{% endfor %}

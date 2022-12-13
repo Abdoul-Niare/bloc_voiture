@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,13 +35,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[ORM\OneToMany(mappedBy: 'annonceFav', targetEntity: Favori::class)]
-    private Collection $favoris;
+    #[ORM\OneToMany(mappedBy: 'users', targetEntity: AnnonceListByUser::class)]
+    private Collection $annonceFav;
+
 
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
-        $this->favoris = new ArrayCollection();
+        $this->annonceFav = new ArrayCollection();
     }
 
     public function __toString()
@@ -149,32 +151,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Favori>
+     * @return Collection<int, AnnonceListByUser>
      */
-    public function getFavoris(): Collection
+    public function getAnnonceFav(): Collection
     {
-        return $this->favoris;
+        return $this->annonceFav;
     }
 
-    public function addFavori(Favori $favori): self
+    public function addAnnonceFav(AnnonceListByUser $annonceFav): self
     {
-        if (!$this->favoris->contains($favori)) {
-            $this->favoris->add($favori);
-            $favori->setAnnonceFav($this);
+        if (!$this->annonceFav->contains($annonceFav)) {
+            $this->annonceFav->add($annonceFav);
+            $annonceFav->setUsers($this);
         }
 
         return $this;
     }
 
-    public function removeFavori(Favori $favori): self
+    public function removeAnnonceFav(AnnonceListByUser $annonceFav): self
     {
-        if ($this->favoris->removeElement($favori)) {
+        if ($this->annonceFav->removeElement($annonceFav)) {
             // set the owning side to null (unless already changed)
-            if ($favori->getAnnonceFav() === $this) {
-                $favori->setAnnonceFav(null);
+            if ($annonceFav->getUsers() === $this) {
+                $annonceFav->setUsers(null);
             }
         }
 
         return $this;
     }
+
 }

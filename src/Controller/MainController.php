@@ -20,7 +20,6 @@ class MainController extends AbstractController
             'annonces' => $annonceRepository ->findBy([
                 'is_visible'=>true
             ]),
-            // 'controller_name' => 'MainController',
         ]);
     }
 

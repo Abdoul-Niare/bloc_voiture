@@ -1,7 +1,8 @@
 body {
-    background-color: rgb(226, 169, 169);
+    background-color: rgb(215, 215, 233);
 }
 img{
     object-fit: cover !important;
     height: 150px !important;
+    
 } 

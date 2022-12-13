@@ -1,16 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!{% endblock %}
+{% block title %}Hello ProfileController!
+{% endblock %}
 
 {% block body %}
-    {% for annonce in annonces %}
-        <div class="card m-4" style="width: 18rem;">
-            <img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{annonce.title|u.truncate(20,'...')}}</h5>
-                <p class="card-text">{{annonce.description|raw}}</p>
-                <a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-success">Voir l'annonce</a>
+
+	<h1 class=" title text-center" >Liste des mes annonces</h1>
+	<div class="container d-flex flex-wrap gap-2" style="width: 100vw">
+		{% for annonce in annonces %}
+			<div class="card m-4 d-flex " style="width: 18rem;">
+				<img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
+				<div class="card-body">
+					<h5 class="card-title">{{annonce.title|u.truncate(20,'...')}}</h5>
+					<p class="card-text">{{annonce.description|raw}}</p>
+					<a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-success">Voir l'annonce</a>
+				</div>
+			</div>
+        {% endfor %}
+    </div>
+
+    <h1 class=" title text-center">Liste mes annonces Favorites</h1>
+
+	<div class="favorite d-flex flex-wrap gap-2" style="width: 100vw">
+        {% for annonce in annoncesFav %}
+            <div class="card m-4 d-flex " style="width: 18rem;">
+                <img class="card-img-top" src="{{asset(annonce.annonces.imgfile )}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{annonce.annonces.title|u.truncate(20,'...')}}</h5>
+                    <p class="card-text">{{annonce.annonces.description|raw}}</p>
+                    <a href="{{ path('app_annonce_show', {'id': annonce.annonces.id}) }}" class="btn btn-success">Voir l'annonce</a>
+                    {% if app.user %}
+                        {% if annonce.annonces.isUserFav(app.user) %}
+                            <a href="{{ path('app_annonce_fav', {'id':annonce.annonces.id})}}" class="btn btn-success " style="width: 10vw, margin-left:10px">
+                                <i class="fa-solid fa-heart"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_annonce_fav', {'id':annonce.annonces.id})}}" class="btn btn-success" style="width: 10vw, margin-left:10px">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}

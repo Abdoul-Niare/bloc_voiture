@@ -1,5 +1,3 @@
-{# Niare #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Annonce
@@ -7,20 +5,22 @@
 
 {% block body %}
 
-<div class="row ">
-    <h1 class="title next-center nt-2 text-center" style="margin: 1rem;">Les annonces appartenant à {{marq.name}}</h1>
-    
-	<div class="row d-flex flex-row col-4 ">
-	{% for annonce in marq.annonces %}
-		<div class="card" style="width: 18rem,">
-		<img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap">
-			<div class="card-body">
-				<a href="#" class="card-title">{{annonce.marque}}</a>
-				<p class="card-text">{{annonce.description|raw}}</p>
-				<a href="#" class="btn btn-primary">Goga</a>	
+<h1 class="title next-center nt-2 text-center" style="margin: 1rem;">Les annonces appartenant à
+	{{marq.name}}</h1>
+
+
+	<div class="container d-flex flex-wrap gap-2" style="width: 100vw ">
+		{% for annonce in marq.annonces %}
+			<div class="card m-4 d-flex " style="width: 18rem;">
+				<img class="card-img-top" src="{{asset(annonce.imgfile )}}" alt="Card image cap">
+				{# <img class="card-img-top" src="{{asset('images_directory/' ~ annonce.imgfile )}}" alt="Card image cap"> #}
+				<div class="card-body">
+					<a href="{{ path('app_marque_index')}}" class="card-title">{{annonce.marque}}</a>
+					<p class="card-text">{{annonce.description|raw}}</p>
+					<a href="{{ path('app_annonce_show', {'id': annonce.id}) }}" class="btn btn-primary">Details</a>
+				</div>
 			</div>
-		</div>
-	{% endfor %}
+		{% endfor %}
 	</div>
-    </div>
-    {%endblock%}
+
+{%endblock%}
